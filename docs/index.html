@@ -50,15 +50,61 @@
             margin-bottom: 2rem;
         }
 
-        .controls h2 {
-            margin-bottom: 1rem;
+        .controls-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            padding: 0.5rem;
+            margin: -0.5rem -0.5rem 1rem -0.5rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .controls-header:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .controls-header h2 {
+            margin: 0;
             font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .controls-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+            color: #667eea;
+        }
+
+        .controls-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .selection-count {
+            font-size: 0.9rem;
+            font-weight: normal;
+            color: #666;
+            background: #f0f0f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
         }
 
         .schedule-select {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+
+        .schedule-select.collapsed {
+            max-height: 0;
+            opacity: 0;
         }
 
         .schedule-checkbox {
@@ -71,26 +117,34 @@
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
+            min-height: 44px;
         }
 
         .schedule-checkbox:hover {
             background: #e9ecef;
         }
 
-        .schedule-checkbox input:checked + label {
-            font-weight: 600;
-        }
-
-        .schedule-checkbox input:checked ~ * {
+        .schedule-checkbox.checked {
             background: #667eea;
             border-color: #667eea;
             color: white;
         }
 
-        input[type="checkbox"] {
+        .schedule-checkbox.checked label {
+            font-weight: 600;
+            color: white;
+        }
+
+        .schedule-checkbox input[type="checkbox"] {
             width: 1.2rem;
             height: 1.2rem;
             cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .schedule-checkbox label {
+            cursor: pointer;
+            margin: 0;
         }
 
         .comparison-grid {
@@ -426,6 +480,29 @@
                 padding: 1rem;
             }
 
+            .controls-header h2 {
+                font-size: 1.1rem;
+            }
+
+            .selection-count {
+                font-size: 0.8rem;
+                padding: 0.2rem 0.6rem;
+            }
+
+            .schedule-select {
+                flex-direction: column;
+            }
+
+            .schedule-checkbox {
+                padding: 0.75rem 1rem;
+                min-height: 52px;
+            }
+
+            .schedule-checkbox input[type="checkbox"] {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+
             .comparison-grid {
                 grid-template-columns: 1fr;
                 gap: 1rem;
@@ -567,7 +644,13 @@
 
     <div class="container">
         <div class="controls">
-            <h2>Select Schedules to Compare</h2>
+            <div class="controls-header" onclick="toggleControls()">
+                <h2>
+                    Select Schedules to Compare
+                    <span id="selection-count" class="selection-count"></span>
+                </h2>
+                <span id="controls-toggle" class="controls-toggle">▼</span>
+            </div>
             <div id="schedule-select" class="schedule-select">
                 <div class="loading">Loading schedules...</div>
             </div>
@@ -612,6 +695,16 @@
 
                 renderScheduleSelector();
                 renderComparison();
+                
+                // Auto-collapse on mobile after a delay
+                if (window.innerWidth <= 768) {
+                    setTimeout(() => {
+                        const selectContainer = document.getElementById('schedule-select');
+                        const toggleIcon = document.getElementById('controls-toggle');
+                        selectContainer.classList.add('collapsed');
+                        toggleIcon.classList.add('collapsed');
+                    }, 2000);
+                }
             } catch (error) {
                 document.getElementById('schedule-select').innerHTML =
                     '<div class="error">Failed to load schedule index. Make sure to run "npm run export" first.</div>';
@@ -628,26 +721,66 @@
             container.innerHTML = availableSchedules.map((schedule, idx) => {
                 const isChecked = selectedSchedules.has(schedule.fileName);
                 const checkedAttr = isChecked ? 'checked' : '';
+                const checkedClass = isChecked ? 'checked' : '';
                 return `
-                <label class="schedule-checkbox">
-                    <input type="checkbox"
-                           id="schedule-${idx}"
+                <label class="schedule-checkbox ${checkedClass}" data-schedule="${schedule.fileName}">
+                    <input type="checkbox" 
+                           id="schedule-${idx}" 
                            value="${schedule.fileName}"
                            ${checkedAttr}
-                           onchange="toggleSchedule('${schedule.fileName}')">
-                    <span>${schedule.fileName}</span>
+                           onchange="toggleSchedule('${schedule.fileName}', this)">
+                    <label for="schedule-${idx}">${schedule.fileName}</label>
                 </label>
             `;
             }).join('');
+            updateSelectionCount();
         }
-
-        function toggleSchedule(fileName) {
+        
+        function toggleSchedule(fileName, checkbox) {
+            const label = checkbox.closest('.schedule-checkbox');
+            
             if (selectedSchedules.has(fileName)) {
                 selectedSchedules.delete(fileName);
+                label.classList.remove('checked');
             } else {
                 selectedSchedules.add(fileName);
+                label.classList.add('checked');
             }
+            updateSelectionCount();
             renderComparison();
+        }
+
+        function toggleControls() {
+            const selectContainer = document.getElementById('schedule-select');
+            const toggleIcon = document.getElementById('controls-toggle');
+            
+            if (selectContainer.classList.contains('collapsed')) {
+                selectContainer.classList.remove('collapsed');
+                toggleIcon.classList.remove('collapsed');
+            } else {
+                selectContainer.classList.add('collapsed');
+                toggleIcon.classList.add('collapsed');
+            }
+        }
+
+        function updateSelectionCount() {
+            const countElement = document.getElementById('selection-count');
+            const count = selectedSchedules.size;
+            const total = availableSchedules.length;
+            
+            if (count === 0) {
+                countElement.textContent = 'None selected';
+                countElement.style.background = '#fee';
+                countElement.style.color = '#c33';
+            } else if (count === total) {
+                countElement.textContent = 'All selected';
+                countElement.style.background = '#efe';
+                countElement.style.color = '#383';
+            } else {
+                countElement.textContent = `${count} of ${total}`;
+                countElement.style.background = '#f0f0f0';
+                countElement.style.color = '#666';
+            }
         }
 
         async function renderComparison() {
@@ -768,6 +901,16 @@
                     message: data.opponentVerification.issueCount === 0 ?
                         'All pairs balanced' :
                         `${data.opponentVerification.issueCount} issues`
+                });
+            }
+            
+            if (data.constraintVerification) {
+                checks.push({
+                    name: 'No Doubleheaders',
+                    pass: data.constraintVerification.doubleheaderCount === 0,
+                    message: data.constraintVerification.doubleheaderCount === 0 ?
+                        'No double bookings' :
+                        `${data.constraintVerification.doubleheaderCount} violations`
                 });
             }
 

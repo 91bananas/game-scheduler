@@ -71,8 +71,108 @@ const loadSchedule = ({
   return { games, sourceFile };
 };
 
+const verifyScheduleConstraints = (games) => {
+  const issues = [];
+  
+  // Check for doubleheaders (teams playing multiple games on same day)
+  const teamsByDate = new Map();
+  games.forEach((game, idx) => {
+    if (!game.date) return;
+    if (!teamsByDate.has(game.date)) {
+      teamsByDate.set(game.date, new Map());
+    }
+    const dateMap = teamsByDate.get(game.date);
+    
+    if (!dateMap.has(game.away)) {
+      dateMap.set(game.away, []);
+    }
+    if (!dateMap.has(game.home)) {
+      dateMap.set(game.home, []);
+    }
+    
+    dateMap.get(game.away).push(idx);
+    dateMap.get(game.home).push(idx);
+  });
+  
+  const doubleheaders = [];
+  teamsByDate.forEach((teamsOnDate, date) => {
+    teamsOnDate.forEach((gameIndices, team) => {
+      if (gameIndices.length > 1) {
+        doubleheaders.push({
+          date,
+          team,
+          gameCount: gameIndices.length,
+          gameIndices,
+        });
+      }
+    });
+  });
+  
+  if (doubleheaders.length > 0) {
+    issues.push({
+      type: 'doubleheader',
+      severity: 'error',
+      message: `Found ${doubleheaders.length} doubleheader violation(s)`,
+      details: doubleheaders,
+    });
+  }
+  
+  // Check for high weekly frequency (3+ games in a week)
+  const getWeekKey = (dateStr) => {
+    const [month, day, year] = dateStr.split('/').map(Number);
+    const date = new Date(year, month - 1, day);
+    const dayOfWeek = date.getDay();
+    const monday = new Date(date);
+    monday.setDate(date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+    return `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
+  };
+  
+  const teamsByWeek = new Map();
+  games.forEach((game) => {
+    if (!game.date) return;
+    const weekKey = getWeekKey(game.date);
+    if (!teamsByWeek.has(weekKey)) {
+      teamsByWeek.set(weekKey, new Map());
+    }
+    const weekMap = teamsByWeek.get(weekKey);
+    
+    if (game.away) {
+      weekMap.set(game.away, (weekMap.get(game.away) || 0) + 1);
+    }
+    if (game.home) {
+      weekMap.set(game.home, (weekMap.get(game.home) || 0) + 1);
+    }
+  });
+  
+  const highFrequency = [];
+  teamsByWeek.forEach((teamsInWeek, weekKey) => {
+    teamsInWeek.forEach((count, team) => {
+      if (count >= 3) {
+        highFrequency.push({ week: weekKey, team, games: count });
+      }
+    });
+  });
+  
+  if (highFrequency.length > 0) {
+    issues.push({
+      type: 'high_frequency',
+      severity: 'warning',
+      message: `Found ${highFrequency.length} instance(s) of teams playing 3+ games in a week`,
+      details: highFrequency,
+    });
+  }
+  
+  return {
+    valid: issues.filter(i => i.severity === 'error').length === 0,
+    issues,
+    doubleheaders,
+    highFrequency,
+  };
+};
+
 module.exports = {
   loadSchedule,
   parseFromTabFile,
   parseFromLegacyFile,
+  verifyScheduleConstraints,
 };

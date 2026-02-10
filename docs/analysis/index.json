@@ -6,6 +6,31 @@
       "outputFile": "docs/analysis/ORIGINAL-schedule.json"
     },
     {
+      "fileName": "schedule-fair-1",
+      "sourceFile": "generated/schedule-fair-1.txt",
+      "outputFile": "docs/analysis/schedule-fair-1.json"
+    },
+    {
+      "fileName": "schedule-fair-2",
+      "sourceFile": "generated/schedule-fair-2.txt",
+      "outputFile": "docs/analysis/schedule-fair-2.json"
+    },
+    {
+      "fileName": "schedule-fair-3",
+      "sourceFile": "generated/schedule-fair-3.txt",
+      "outputFile": "docs/analysis/schedule-fair-3.json"
+    },
+    {
+      "fileName": "schedule-fair-4",
+      "sourceFile": "generated/schedule-fair-4.txt",
+      "outputFile": "docs/analysis/schedule-fair-4.json"
+    },
+    {
+      "fileName": "schedule-fair-5",
+      "sourceFile": "generated/schedule-fair-5.txt",
+      "outputFile": "docs/analysis/schedule-fair-5.json"
+    },
+    {
       "fileName": "schedule-pony-1",
       "sourceFile": "generated/schedule-pony-1.txt",
       "outputFile": "docs/analysis/schedule-pony-1.json"
@@ -29,7 +54,12 @@
       "fileName": "schedule-pony-5",
       "sourceFile": "generated/schedule-pony-5.txt",
       "outputFile": "docs/analysis/schedule-pony-5.json"
+    },
+    {
+      "fileName": "schedule-test-test-weekly-1-1",
+      "sourceFile": "generated/schedule-test-test-weekly-1-1.txt",
+      "outputFile": "docs/analysis/schedule-test-test-weekly-1-1.json"
     }
   ],
-  "generatedAt": "2026-02-10T16:17:32.982Z"
+  "generatedAt": "2026-02-10T17:42:12.668Z"
 }

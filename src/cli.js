@@ -2,7 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { loadSchedule } = require('./parseSchedule');
+const { loadSchedule, verifyScheduleConstraints } = require('./parseSchedule');
 const {
   DEFAULT_TARGET_SLOT,
   DEFAULT_GAMES_PER_PAIR,
@@ -321,6 +321,50 @@ const printLockedTeamsVerification = (verification) => {
   }
 };
 
+const printConstraintVerification = (verification) => {
+  if (!verification) {
+    return;
+  }
+  
+  const { valid, issues, doubleheaders, highFrequency } = verification;
+  
+  // Print doubleheader check
+  console.log('\n=== Doubleheader Check ===');
+  if (doubleheaders.length === 0) {
+    console.log('  ✓ No doubleheaders found - no team plays multiple games on the same day');
+  } else {
+    console.log(`  ⚠ Found ${doubleheaders.length} doubleheader violation(s):`);
+    doubleheaders.slice(0, 10).forEach(({ date, team, gameCount }) => {
+      console.log(`    ${date}: ${team} plays ${gameCount} games`);
+    });
+    if (doubleheaders.length > 10) {
+      console.log(`    ... and ${doubleheaders.length - 10} more`);
+    }
+  }
+  
+  // Print weekly frequency check
+  console.log('\n=== Weekly Frequency Check ===');
+  if (highFrequency.length === 0) {
+    console.log('  ✓ All teams play fewer than 3 games per week');
+  } else {
+    console.log(`  ⚠ Found ${highFrequency.length} instance(s) of teams playing 3+ games in a week:`);
+    highFrequency.slice(0, 10).forEach(({ week, team, games }) => {
+      console.log(`    Week of ${week}: ${team} plays ${games} games`);
+    });
+    if (highFrequency.length > 10) {
+      console.log(`    ... and ${highFrequency.length - 10} more`);
+    }
+  }
+  
+  // Overall status
+  if (valid) {
+    console.log('\n  ✓ All critical constraints satisfied');
+  } else {
+    const errorCount = issues.filter(i => i.severity === 'error').length;
+    console.log(`\n  ⚠ ${errorCount} critical constraint violation(s) found`);
+  }
+};
+
 const listScheduleFiles = (dirPath) => {
   if (!dirPath) {
     return [];
@@ -522,6 +566,8 @@ const handleAnalyze = (flags) => {
     printVerificationReport(verification);
     const lockVerification = verifyLockedTeamsMatch(games, lockFile, slotFile);
     printLockedTeamsVerification(lockVerification);
+    const constraintVerification = verifyScheduleConstraints(games);
+    printConstraintVerification(constraintVerification);
   });
 };
 
@@ -735,6 +781,7 @@ const handleExport = (flags) => {
       const opponentVerification = verifyOpponentCounts(teamStats, Number(flags.opponentCount || 3));
       const slotVerification = verifyAgainstFile(games, slotFile);
       const lockVerification = verifyLockedTeamsMatch(games, lockFile, slotFile);
+      const constraintVerification = verifyScheduleConstraints(games);
     
     // Convert Maps to objects for JSON serialization
     const teams = extractTeams(games);
@@ -787,6 +834,13 @@ const handleExport = (flags) => {
         success: lockVerification.success,
         mismatches: lockVerification.mismatches,
       } : null,
+      constraintVerification: {
+        valid: constraintVerification.valid,
+        doubleheaderCount: constraintVerification.doubleheaders?.length || 0,
+        doubleheaders: constraintVerification.doubleheaders || [],
+        highFrequencyCount: constraintVerification.highFrequency?.length || 0,
+        highFrequency: constraintVerification.highFrequency || [],
+      },
     };
     
     const outputFile = path.join(outputDir, `${fileName}.json`);

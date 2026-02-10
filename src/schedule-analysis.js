@@ -190,3 +190,86 @@ if (!homeAwayBalance.length) {
   
   console.log(`\nSummary: ${perfectBalance} perfectly balanced, ${nearlyBalanced} nearly balanced, ${imbalanced} imbalanced`);
 }
+
+// Doubleheader detection (teams playing multiple games on same day)
+const teamsByDate = new Map();
+games.forEach((game) => {
+  if (!game.date) return;
+  if (!teamsByDate.has(game.date)) {
+    teamsByDate.set(game.date, new Map());
+  }
+  const dateMap = teamsByDate.get(game.date);
+  
+  if (game.away) {
+    dateMap.set(game.away, (dateMap.get(game.away) || 0) + 1);
+  }
+  if (game.home) {
+    dateMap.set(game.home, (dateMap.get(game.home) || 0) + 1);
+  }
+});
+
+const doubleheaders = [];
+teamsByDate.forEach((teamsOnDate, date) => {
+  teamsOnDate.forEach((count, team) => {
+    if (count > 1) {
+      doubleheaders.push({ date, team, games: count });
+    }
+  });
+});
+
+console.log('\n=== Doubleheader Check ===');
+if (doubleheaders.length === 0) {
+  console.log('✓ No doubleheaders found - no team plays multiple games on the same day');
+} else {
+  console.log(`⚠ Found ${doubleheaders.length} doubleheader violation(s):`);
+  doubleheaders.forEach(({ date, team, games }) => {
+    console.log(`  - ${date}: ${team} plays ${games} games`);
+  });
+}
+
+// Weekly frequency check (teams playing 3+ times in a calendar week)
+const getWeekKey = (dateStr) => {
+  const [month, day, year] = dateStr.split('/').map(Number);
+  const date = new Date(year, month - 1, day);
+  // Get the Monday of the week
+  const dayOfWeek = date.getDay();
+  const monday = new Date(date);
+  monday.setDate(date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+  return `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
+};
+
+const teamsByWeek = new Map();
+games.forEach((game) => {
+  if (!game.date) return;
+  const weekKey = getWeekKey(game.date);
+  if (!teamsByWeek.has(weekKey)) {
+    teamsByWeek.set(weekKey, new Map());
+  }
+  const weekMap = teamsByWeek.get(weekKey);
+  
+  if (game.away) {
+    weekMap.set(game.away, (weekMap.get(game.away) || 0) + 1);
+  }
+  if (game.home) {
+    weekMap.set(game.home, (weekMap.get(game.home) || 0) + 1);
+  }
+});
+
+const highFrequencyWeeks = [];
+teamsByWeek.forEach((teamsInWeek, weekKey) => {
+  teamsInWeek.forEach((count, team) => {
+    if (count >= 3) {
+      highFrequencyWeeks.push({ week: weekKey, team, games: count });
+    }
+  });
+});
+
+console.log('\n=== Weekly Frequency Check ===');
+if (highFrequencyWeeks.length === 0) {
+  console.log('✓ All teams play fewer than 3 games per week');
+} else {
+  console.log(`⚠ Found ${highFrequencyWeeks.length} instance(s) of teams playing 3+ games in a week:`);
+  highFrequencyWeeks.forEach(({ week, team, games }) => {
+    console.log(`  - Week of ${week}: ${team} plays ${games} games`);
+  });
+}

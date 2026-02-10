@@ -1,7 +1,7 @@
 {
   "fileName": "schedule-pony-5",
   "sourceFile": "generated/schedule-pony-5.txt",
-  "generatedAt": "2026-02-10T16:17:32.981Z",
+  "generatedAt": "2026-02-10T17:42:12.665Z",
   "gameCount": 63,
   "teams": [
     "KP Ballenger",
@@ -549,5 +549,68 @@
     "mismatchCount": 0,
     "success": true,
     "mismatches": []
+  },
+  "constraintVerification": {
+    "valid": true,
+    "doubleheaderCount": 0,
+    "doubleheaders": [],
+    "highFrequencyCount": 11,
+    "highFrequency": [
+      {
+        "week": "2026-02-23",
+        "team": "KP Cleveland",
+        "games": 3
+      },
+      {
+        "week": "2026-03-02",
+        "team": "KP Pinder",
+        "games": 3
+      },
+      {
+        "week": "2026-03-09",
+        "team": "KP Moreno",
+        "games": 3
+      },
+      {
+        "week": "2026-03-09",
+        "team": "KP Miller",
+        "games": 3
+      },
+      {
+        "week": "2026-03-16",
+        "team": "KP Cleveland",
+        "games": 3
+      },
+      {
+        "week": "2026-03-23",
+        "team": "KP Miller",
+        "games": 3
+      },
+      {
+        "week": "2026-03-23",
+        "team": "KP Ballenger",
+        "games": 3
+      },
+      {
+        "week": "2026-04-06",
+        "team": "KP Cleveland",
+        "games": 3
+      },
+      {
+        "week": "2026-04-06",
+        "team": "KP Moreno",
+        "games": 3
+      },
+      {
+        "week": "2026-04-20",
+        "team": "KP Mccoid",
+        "games": 3
+      },
+      {
+        "week": "2026-04-27",
+        "team": "KP Moreno",
+        "games": 3
+      }
+    ]
   }
 }

@@ -184,6 +184,48 @@ const optimizeHomeAwayBalance = (games, lockRequirements = new Map(), seed = Dat
   return { games: gamesCopy, flips };
 };
 
+const verifyNoDoubleheaders = (games) => {
+  const teamsByDate = new Map();
+  const violations = [];
+  
+  games.forEach((game, idx) => {
+    if (!teamsByDate.has(game.date)) {
+      teamsByDate.set(game.date, new Map());
+    }
+    const dateMap = teamsByDate.get(game.date);
+    
+    // Track game indices for each team on this date
+    if (!dateMap.has(game.away)) {
+      dateMap.set(game.away, []);
+    }
+    if (!dateMap.has(game.home)) {
+      dateMap.set(game.home, []);
+    }
+    
+    dateMap.get(game.away).push(idx);
+    dateMap.get(game.home).push(idx);
+  });
+  
+  // Check for teams playing multiple games on same day
+  teamsByDate.forEach((teamsOnDate, date) => {
+    teamsOnDate.forEach((gameIndices, team) => {
+      if (gameIndices.length > 1) {
+        violations.push({
+          date,
+          team,
+          gameCount: gameIndices.length,
+          gameIndices,
+        });
+      }
+    });
+  });
+  
+  return {
+    valid: violations.length === 0,
+    violations,
+  };
+};
+
 const computeTargetRange = (teamCount, slotGameCount) => {
   const appearances = slotGameCount * 2;
   const ideal = teamCount ? appearances / teamCount : 0;
@@ -220,6 +262,15 @@ const createPairState = (teams, gamesPerPair) => {
 const needScore = (count, minTarget) => Math.max(0, minTarget - count);
 const projectedExcess = (count, delta, maxTarget) => Math.max(0, (count + delta) - maxTarget);
 
+const getWeekKey = (dateStr) => {
+  const [month, day, year] = dateStr.split('/').map(Number);
+  const date = new Date(year, month - 1, day);
+  const dayOfWeek = date.getDay();
+  const monday = new Date(date);
+  monday.setDate(date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+  return `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
+};
+
 const selectPair = ({
   pairs,
   isTargetSlot,
@@ -232,11 +283,13 @@ const selectPair = ({
   diagnostics,
   teamsPlayedToday,
   allLockedTeams,
+  teamsThisWeek,
+  currentDate,
 }) => {
   let bestScore = -Infinity;
   const best = [];
   const forced = Array.isArray(requiredTeams) && requiredTeams.length > 0;
-  const rejected = diagnostics ? { noGames: 0, wrongTeams: 0, sameDay: 0, wouldExceed: 0, teamLocked: 0 } : null;
+  const rejected = diagnostics ? { noGames: 0, wrongTeams: 0, sameDay: 0, wouldExceed: 0, teamLocked: 0, weekLimit: 0 } : null;
   
   pairs.forEach((entry) => {
     if (entry.remaining <= 0) {
@@ -249,6 +302,13 @@ const selectPair = ({
     }
     const [teamA, teamB] = entry.teams;
     
+    // CRITICAL: Check if either team already played today - this prevents doubleheaders
+    // This check applies to ALL slots, including forced/locked ones
+    if (teamsPlayedToday && (teamsPlayedToday.has(teamA) || teamsPlayedToday.has(teamB))) {
+      if (rejected) rejected.sameDay++;
+      return;
+    }
+    
     // If this is NOT a forced/locked slot, reject pairs involving globally locked teams
     if (!forced && allLockedTeams) {
       if (allLockedTeams.has(teamA) || allLockedTeams.has(teamB)) {
@@ -257,9 +317,13 @@ const selectPair = ({
       }
     }
     
-    // Check if either team already played today
-    if (teamsPlayedToday && (teamsPlayedToday.has(teamA) || teamsPlayedToday.has(teamB))) {
-      if (rejected) rejected.sameDay++;
+    // Check weekly frequency - prefer to keep teams under 3 games per week
+    const weeklyCountA = teamsThisWeek ? (teamsThisWeek.get(teamA) || 0) : 0;
+    const weeklyCountB = teamsThisWeek ? (teamsThisWeek.get(teamB) || 0) : 0;
+    
+    // Hard reject if either team would hit 3 games this week (only for non-forced slots)
+    if (!forced && (weeklyCountA >= 2 || weeklyCountB >= 2)) {
+      if (rejected) rejected.weekLimit++;
       return;
     }
     
@@ -277,8 +341,12 @@ const selectPair = ({
     const base = entry.remaining;
     const targetScore = isTargetSlot ? (needA + needB) * 3 : (needA + needB) * -0.2;
     const gamesLeft = (teamGamesRemaining.get(teamA) + teamGamesRemaining.get(teamB)) * 0.02;
+    
+    // Penalty for teams approaching weekly limit
+    const weeklyPenalty = (weeklyCountA + weeklyCountB) * -2.0;
+    
     const jitter = rng() * 0.05;
-    const score = base + targetScore + gamesLeft + jitter;
+    const score = base + targetScore + gamesLeft + weeklyPenalty + jitter;
     if (score > bestScore) {
       bestScore = score;
       best.length = 0;
@@ -400,6 +468,7 @@ const tryGenerateSchedule = ({
   const { min: minTarget, max: maxTarget } = computeTargetRange(teams.length, targetSlots);
   const assignments = [];
   const teamsByDate = new Map();
+  const teamsByWeek = new Map();
   
   // Track home/away counts for balance
   const homeAwayCounts = {
@@ -425,6 +494,13 @@ const tryGenerateSchedule = ({
     }
     const teamsPlayedToday = teamsByDate.get(slot.date);
     
+    // Track teams playing this week
+    const weekKey = getWeekKey(slot.date);
+    if (!teamsByWeek.has(weekKey)) {
+      teamsByWeek.set(weekKey, new Map());
+    }
+    const teamsThisWeek = teamsByWeek.get(weekKey);
+    
     const diagnostics = {};
     const candidate = selectPair({
       pairs,
@@ -438,13 +514,15 @@ const tryGenerateSchedule = ({
       diagnostics: verbose ? diagnostics : null,
       teamsPlayedToday,
       allLockedTeams: allLockedTeams.size > 0 ? allLockedTeams : null,
+      teamsThisWeek,
+      currentDate: slot.date,
     });
     if (!candidate) {
       const lockMsg = slotLock ? ` (locked to ${Array.from(slotLock.requiredTeams || []).join(', ')})` : '';
       let detailMsg = '';
       if (verbose && diagnostics.rejection) {
         const r = diagnostics.rejection;
-        detailMsg = ` [${r.noGames} exhausted, ${r.wrongTeams} wrong-team, ${r.teamLocked} team-locked, ${r.sameDay} same-day, ${r.wouldExceed} would-exceed-max]`;
+        detailMsg = ` [${r.noGames} exhausted, ${r.wrongTeams} wrong-team, ${r.teamLocked} team-locked, ${r.sameDay} same-day, ${r.weekLimit || 0} week-limit, ${r.wouldExceed} would-exceed-max]`;
         if (diagnostics.forced && diagnostics.requiredTeams) {
           const locked = diagnostics.requiredTeams;
           const remaining = pairs.filter((p) => 
@@ -479,6 +557,10 @@ const tryGenerateSchedule = ({
     // Mark both teams as having played on this date
     teamsPlayedToday.add(away);
     teamsPlayedToday.add(home);
+    
+    // Track weekly games for both teams
+    teamsThisWeek.set(away, (teamsThisWeek.get(away) || 0) + 1);
+    teamsThisWeek.set(home, (teamsThisWeek.get(home) || 0) + 1);
     
     teamGamesRemaining.set(away, teamGamesRemaining.get(away) - 1);
     teamGamesRemaining.set(home, teamGamesRemaining.get(home) - 1);
@@ -546,6 +628,25 @@ const generateBalancedSchedule = ({
       let finalGames = result.games;
       let flips = 0;
       
+      // Verify no doubleheaders before optimization
+      const dhCheck = verifyNoDoubleheaders(finalGames);
+      if (!dhCheck.valid) {
+        const violations = dhCheck.violations.slice(0, 3).map(v => 
+          `${v.team} on ${v.date} (${v.gameCount} games)`
+        ).join(', ');
+        failures.push({
+          attempt: attempt + 1,
+          reason: `Generated schedule has doubleheaders: ${violations}`,
+          slotIndex: null,
+          partialGames: finalGames,
+          seed: attemptSeed,
+        });
+        if (verbose) {
+          console.error(`  Attempt ${attempt + 1} failed: Doubleheader violations found`);
+        }
+        continue; // Try next attempt
+      }
+      
       if (optimizeHomeAway) {
         const optimized = optimizeHomeAwayBalance(
           result.games,
@@ -555,6 +656,17 @@ const generateBalancedSchedule = ({
         );
         finalGames = optimized.games;
         flips = optimized.flips;
+        
+        // Verify no doubleheaders after optimization
+        const dhCheckAfter = verifyNoDoubleheaders(finalGames);
+        if (!dhCheckAfter.valid) {
+          // Optimization introduced doubleheaders, use pre-optimized version
+          if (verbose) {
+            console.warn(`  Optimization introduced doubleheaders, using non-optimized schedule`);
+          }
+          finalGames = result.games;
+          flips = 0;
+        }
       }
       
       return { ...result, games: finalGames, seed: attemptSeed, attempts: attempt + 1, homeAwayFlips: flips };
@@ -598,4 +710,5 @@ module.exports = {
   computeSlotFairness,
   computeHomeAwayBalance,
   optimizeHomeAwayBalance,
+  verifyNoDoubleheaders,
 };

@@ -1,7 +1,7 @@
 {
   "fileName": "ORIGINAL-schedule",
   "sourceFile": "ORIGINAL-schedule.txt",
-  "generatedAt": "2026-02-10T16:17:32.974Z",
+  "generatedAt": "2026-02-10T17:42:12.638Z",
   "gameCount": 63,
   "teams": [
     "KP Ballenger",
@@ -549,5 +549,12 @@
     "mismatchCount": 0,
     "success": true,
     "mismatches": []
+  },
+  "constraintVerification": {
+    "valid": true,
+    "doubleheaderCount": 0,
+    "doubleheaders": [],
+    "highFrequencyCount": 0,
+    "highFrequency": []
   }
 }
