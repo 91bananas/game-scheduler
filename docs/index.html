@@ -484,20 +484,18 @@
                 position: relative;
             }
 
-            /* Keep side-by-side but make it scrollable */
+            /* Keep side-by-side at 50% width each */
             .schedule-comparison {
                 display: flex;
                 gap: 0.5rem;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scroll-snap-type: x proximity;
-                padding-bottom: 3rem;
+                overflow-x: visible;
+                padding-bottom: 1rem;
             }
 
             .schedule-column {
-                flex: 0 0 85%;
-                scroll-snap-align: start;
-                padding: 1rem;
+                flex: 0 0 calc(50% - 0.25rem);
+                padding: 0.75rem;
+                min-width: 0;
             }
 
             .schedule-column.single-view {
@@ -510,56 +508,53 @@
             }
 
             .schedule-column h3 {
-                font-size: 1rem;
+                font-size: 0.85rem;
                 position: sticky;
                 top: 0;
                 background: white;
                 padding: 0.5rem 0;
-                margin: -1rem -1rem 0.5rem -1rem;
-                padding-left: 1rem;
-                padding-right: 1rem;
+                margin: -0.75rem -0.75rem 0.5rem -0.75rem;
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
                 z-index: 10;
                 border-bottom: 2px solid #667eea;
             }
 
+            .schedule-column h3 span {
+                display: block;
+                font-size: 0.75rem;
+                margin-top: 0.25rem;
+            }
+
             .game-item {
-                padding: 0.5rem;
+                padding: 0.4rem;
             }
 
             .game-item .game-date {
-                font-size: 0.85rem;
+                font-size: 0.75rem;
+                margin-bottom: 0.25rem;
             }
 
             .game-item .game-matchup {
-                font-size: 0.9rem;
+                font-size: 0.8rem;
+                line-height: 1.3;
+            }
+
+            .game-item .game-matchup strong {
+                display: block;
+            }
+
+            .game-item .game-matchup .at-symbol {
+                display: none;
             }
 
             .game-item .game-slot {
-                font-size: 0.8rem;
+                font-size: 0.7rem;
+                margin-top: 0.25rem;
             }
 
-            /* Add scroll indicator for comparison views only */
-            .schedule-comparison:has(.comparison-view)::before {
-                content: '← Swipe to compare →';
-                position: fixed;
-                bottom: 2rem;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(102, 126, 234, 0.95);
-                color: white;
-                padding: 0.6rem 1.2rem;
-                border-radius: 20px;
-                font-size: 0.85rem;
-                font-weight: 600;
-                pointer-events: none;
-                z-index: 100;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-                animation: fadeInOut 4s ease-in-out;
-            }
-
-            @keyframes fadeInOut {
-                0%, 100% { opacity: 0; }
-                15%, 85% { opacity: 1; }
+            .game-list {
+                gap: 0.5rem;
             }
         }
     </style>
@@ -1017,7 +1012,7 @@
                         <div class="game-item">
                             <div class="game-date">${game.date}</div>
                             <div class="game-matchup">
-                                <strong>${game.away}</strong> @ <strong>${game.home}</strong>
+                                <strong>${game.away}</strong><span class="at-symbol"> @ </span><strong>${game.home}</strong>
                             </div>
                             <div class="game-slot">${game.slot}</div>
                         </div>
