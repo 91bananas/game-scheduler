@@ -10,14 +10,14 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: #f5f5f5;
             color: #333;
             line-height: 1.6;
         }
-        
+
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -25,23 +25,23 @@
             text-align: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        
+
         header h1 {
             font-size: 2rem;
             margin-bottom: 0.5rem;
         }
-        
+
         header p {
             opacity: 0.9;
             font-size: 1.1rem;
         }
-        
+
         .container {
             max-width: 1400px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
-        
+
         .controls {
             background: white;
             padding: 1.5rem;
@@ -49,18 +49,18 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
         }
-        
+
         .controls h2 {
             margin-bottom: 1rem;
             font-size: 1.3rem;
         }
-        
+
         .schedule-select {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
         }
-        
+
         .schedule-checkbox {
             display: flex;
             align-items: center;
@@ -72,33 +72,33 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        
+
         .schedule-checkbox:hover {
             background: #e9ecef;
         }
-        
+
         .schedule-checkbox input:checked + label {
             font-weight: 600;
         }
-        
+
         .schedule-checkbox input:checked ~ * {
             background: #667eea;
             border-color: #667eea;
             color: white;
         }
-        
+
         input[type="checkbox"] {
             width: 1.2rem;
             height: 1.2rem;
             cursor: pointer;
         }
-        
+
         .comparison-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 1.5rem;
         }
-        
+
         .schedule-card {
             background: white;
             border-radius: 8px;
@@ -106,66 +106,99 @@
             overflow: hidden;
             transition: transform 0.2s;
         }
-        
+
         .schedule-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        
+
         .card-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 1.5rem;
         }
-        
+
         .card-header h3 {
             font-size: 1.4rem;
             margin-bottom: 0.5rem;
         }
-        
+
         .card-header .meta {
             font-size: 0.9rem;
             opacity: 0.9;
         }
-        
+
         .card-body {
             padding: 1.5rem;
         }
-        
+
         .section {
             margin-bottom: 1.5rem;
         }
-        
+
         .section:last-child {
             margin-bottom: 0;
         }
-        
+
         .section-title {
             font-weight: 600;
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
             color: #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            padding: 0.5rem;
+            margin: -0.5rem;
+            border-radius: 4px;
+            transition: background 0.2s;
         }
-        
+
+        .section-title:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .section-title .toggle-icon {
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .section-title.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
         .stat-row {
             display: flex;
             justify-content: space-between;
             padding: 0.4rem 0;
             border-bottom: 1px solid #f0f0f0;
         }
-        
+
         .stat-row:last-child {
             border-bottom: none;
         }
-        
+
         .stat-label {
             color: #666;
         }
-        
+
         .stat-value {
             font-weight: 600;
         }
-        
+
         .badge {
             display: inline-block;
             padding: 0.25rem 0.75rem;
@@ -173,22 +206,22 @@
             font-size: 0.85rem;
             font-weight: 600;
         }
-        
+
         .badge-success {
             background: #d4edda;
             color: #155724;
         }
-        
+
         .badge-warning {
             background: #fff3cd;
             color: #856404;
         }
-        
+
         .badge-error {
             background: #f8d7da;
             color: #721c24;
         }
-        
+
         .team-list {
             display: flex;
             flex-direction: column;
@@ -196,7 +229,7 @@
             max-height: 300px;
             overflow-y: auto;
         }
-        
+
         .team-item {
             display: flex;
             justify-content: space-between;
@@ -206,18 +239,18 @@
             border-radius: 4px;
             font-size: 0.9rem;
         }
-        
+
         .team-item .icon {
             margin-right: 0.5rem;
         }
-        
+
         .loading {
             text-align: center;
             padding: 3rem;
             font-size: 1.2rem;
             color: #666;
         }
-        
+
         .error {
             background: #f8d7da;
             color: #721c24;
@@ -225,7 +258,7 @@
             border-radius: 8px;
             margin: 1rem 0;
         }
-        
+
         .no-selection {
             text-align: center;
             padding: 3rem;
@@ -234,11 +267,11 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
+
         .schedule-card {
             cursor: pointer;
         }
-        
+
         .schedule-card .card-header::after {
             content: '👁 Click to view games';
             display: block;
@@ -246,7 +279,15 @@
             opacity: 0.8;
             margin-top: 0.5rem;
         }
-        
+
+        .schedule-card .card-body {
+            pointer-events: auto;
+        }
+
+        .schedule-card .section-title {
+            pointer-events: auto;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -258,11 +299,11 @@
             background: rgba(0,0,0,0.7);
             overflow: auto;
         }
-        
+
         .modal.active {
             display: block;
         }
-        
+
         .modal-content {
             background: #f5f5f5;
             margin: 2rem auto;
@@ -272,7 +313,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
-        
+
         .modal-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -282,12 +323,12 @@
             align-items: center;
             border-radius: 8px 8px 0 0;
         }
-        
+
         .modal-header h2 {
             margin: 0;
             font-size: 1.5rem;
         }
-        
+
         .close-btn {
             background: rgba(255,255,255,0.2);
             border: none;
@@ -298,83 +339,227 @@
             border-radius: 4px;
             transition: background 0.2s;
         }
-        
+
         .close-btn:hover {
             background: rgba(255,255,255,0.3);
         }
-        
+
         .modal-body {
             padding: 2rem;
             max-height: calc(100vh - 200px);
             overflow-y: auto;
         }
-        
+
         .schedule-comparison {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
+            min-width: 0;
         }
-        
+
         .schedule-column {
             background: white;
             border-radius: 8px;
             padding: 1.5rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-width: 0;
         }
-        
+
         .schedule-column h3 {
             margin: 0 0 1rem 0;
             padding-bottom: 0.75rem;
             border-bottom: 2px solid #667eea;
             color: #667eea;
         }
-        
+
         .game-list {
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
         }
-        
+
         .game-item {
             padding: 0.75rem;
             background: #f8f9fa;
             border-radius: 4px;
             border-left: 3px solid #667eea;
         }
-        
+
         .game-item .game-date {
             font-weight: 600;
             color: #667eea;
             font-size: 0.9rem;
             margin-bottom: 0.25rem;
         }
-        
+
         .game-item .game-matchup {
             font-size: 1rem;
             margin-bottom: 0.25rem;
         }
-        
+
         .game-item .game-slot {
             font-size: 0.85rem;
             color: #666;
         }
-        
+
         @media (max-width: 1200px) {
             .schedule-comparison {
-                grid-template-columns: 1fr;
+                gap: 1rem;
             }
         }
-        
+
         @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            header p {
+                font-size: 0.95rem;
+            }
+
+            .container {
+                padding: 0 0.5rem;
+                margin: 1rem auto;
+            }
+
+            .controls {
+                padding: 1rem;
+            }
+
             .comparison-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
-            
+
+            .schedule-card .card-body {
+                padding: 1rem;
+            }
+
+            .schedule-card:hover {
+                transform: none;
+            }
+
+            .section-title:hover {
+                background: none;
+            }
+
+            .section-title {
+                font-size: 0.95rem;
+                padding: 0.4rem;
+            }
+
+            /* Collapse sections by default on mobile */
+            .section:not(.always-visible) .section-content:not(.expanded) {
+                max-height: 0 !important;
+                opacity: 0 !important;
+            }
+
+            .section:not(.always-visible) .section-content.expanded {
+                max-height: 1000px !important;
+                opacity: 1 !important;
+            }
+
+            .section:not(.always-visible):not(:has(.expanded)) .section-title .toggle-icon {
+                transform: rotate(-90deg);
+            }
+
             .modal-content {
                 width: 100%;
                 margin: 0;
                 border-radius: 0;
                 height: 100%;
+            }
+
+            .modal-header {
+                padding: 1rem;
+            }
+
+            .modal-header h2 {
+                font-size: 1.1rem;
+            }
+
+            .modal-body {
+                padding: 0.5rem;
+                max-height: calc(100vh - 100px);
+                position: relative;
+            }
+
+            /* Keep side-by-side but make it scrollable */
+            .schedule-comparison {
+                display: flex;
+                gap: 0.5rem;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x proximity;
+                padding-bottom: 3rem;
+            }
+
+            .schedule-column {
+                flex: 0 0 85%;
+                scroll-snap-align: start;
+                padding: 1rem;
+            }
+
+            .schedule-column.single-view {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+
+            .schedule-comparison:has(.single-view) {
+                overflow-x: visible;
+            }
+
+            .schedule-column h3 {
+                font-size: 1rem;
+                position: sticky;
+                top: 0;
+                background: white;
+                padding: 0.5rem 0;
+                margin: -1rem -1rem 0.5rem -1rem;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                z-index: 10;
+                border-bottom: 2px solid #667eea;
+            }
+
+            .game-item {
+                padding: 0.5rem;
+            }
+
+            .game-item .game-date {
+                font-size: 0.85rem;
+            }
+
+            .game-item .game-matchup {
+                font-size: 0.9rem;
+            }
+
+            .game-item .game-slot {
+                font-size: 0.8rem;
+            }
+
+            /* Add scroll indicator for comparison views only */
+            .schedule-comparison:has(.comparison-view)::before {
+                content: '← Swipe to compare →';
+                position: fixed;
+                bottom: 2rem;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(102, 126, 234, 0.95);
+                color: white;
+                padding: 0.6rem 1.2rem;
+                border-radius: 20px;
+                font-size: 0.85rem;
+                font-weight: 600;
+                pointer-events: none;
+                z-index: 100;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                animation: fadeInOut 4s ease-in-out;
+            }
+
+            @keyframes fadeInOut {
+                0%, 100% { opacity: 0; }
+                15%, 85% { opacity: 1; }
             }
         }
     </style>
@@ -384,7 +569,7 @@
         <h1>📅 Schedule Analysis Comparison</h1>
         <p>Compare and analyze multiple schedule variants</p>
     </header>
-    
+
     <div class="container">
         <div class="controls">
             <h2>Select Schedules to Compare</h2>
@@ -392,14 +577,14 @@
                 <div class="loading">Loading schedules...</div>
             </div>
         </div>
-        
+
         <div id="comparison-grid" class="comparison-grid">
             <div class="no-selection">
                 Select one or more schedules above to view analysis
             </div>
         </div>
     </div>
-    
+
     <div id="detail-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -413,45 +598,45 @@
             </div>
         </div>
     </div>
-    
+
     <script>
         let availableSchedules = [];
         let selectedSchedules = new Set();
         const ORIGINAL_SCHEDULE = 'ORIGINAL-schedule';
-        
+
         let scheduleDataCache = new Map();
-        
+
         async function loadScheduleIndex() {
             try {
                 const response = await fetch('analysis/index.json');
                 const data = await response.json();
                 availableSchedules = data.schedules || [];
-                
+
                 // Auto-select all schedules by default
                 availableSchedules.forEach(s => selectedSchedules.add(s.fileName));
-                
+
                 renderScheduleSelector();
                 renderComparison();
             } catch (error) {
-                document.getElementById('schedule-select').innerHTML = 
+                document.getElementById('schedule-select').innerHTML =
                     '<div class="error">Failed to load schedule index. Make sure to run "npm run export" first.</div>';
             }
         }
-        
+
         function renderScheduleSelector() {
             const container = document.getElementById('schedule-select');
             if (availableSchedules.length === 0) {
                 container.innerHTML = '<div class="error">No schedules found. Run "npm run export" to generate analysis files.</div>';
                 return;
             }
-            
+
             container.innerHTML = availableSchedules.map((schedule, idx) => {
                 const isChecked = selectedSchedules.has(schedule.fileName);
                 const checkedAttr = isChecked ? 'checked' : '';
                 return `
                 <label class="schedule-checkbox">
-                    <input type="checkbox" 
-                           id="schedule-${idx}" 
+                    <input type="checkbox"
+                           id="schedule-${idx}"
                            value="${schedule.fileName}"
                            ${checkedAttr}
                            onchange="toggleSchedule('${schedule.fileName}')">
@@ -460,7 +645,7 @@
             `;
             }).join('');
         }
-        
+
         function toggleSchedule(fileName) {
             if (selectedSchedules.has(fileName)) {
                 selectedSchedules.delete(fileName);
@@ -469,19 +654,19 @@
             }
             renderComparison();
         }
-        
+
         async function renderComparison() {
             const container = document.getElementById('comparison-grid');
-            
+
             if (selectedSchedules.size === 0) {
                 container.innerHTML = '<div class="no-selection">Select one or more schedules above to view analysis</div>';
                 return;
             }
-            
+
             container.innerHTML = '<div class="loading">Loading schedule data...</div>';
-            
+
             const cards = [];
-            
+
             // Always show ORIGINAL-schedule first if it's selected
             const schedulesToShow = Array.from(selectedSchedules);
             schedulesToShow.sort((a, b) => {
@@ -489,7 +674,7 @@
                 if (b === ORIGINAL_SCHEDULE) return 1;
                 return a.localeCompare(b);
             });
-            
+
             for (const fileName of schedulesToShow) {
                 try {
                     const data = await loadScheduleData(fileName);
@@ -498,10 +683,10 @@
                     cards.push(`<div class="error">Failed to load ${fileName}</div>`);
                 }
             }
-            
+
             container.innerHTML = cards.join('');
         }
-        
+
         async function loadScheduleData(fileName) {
             if (scheduleDataCache.has(fileName)) {
                 return scheduleDataCache.get(fileName);
@@ -513,18 +698,18 @@
             scheduleDataCache.set(fileName, data);
             return data;
         }
-        
+
         function renderScheduleCard(data) {
             const homeAwayStats = calculateHomeAwayStats(data.homeAwayBalance);
             const verificationStatus = getVerificationStatus(data);
             const isOriginal = data.fileName === ORIGINAL_SCHEDULE;
             const baselineBadge = isOriginal ? '<span class="badge badge-success" style="margin-left: 0.5rem;">📌 BASELINE</span>' : '';
-            
+
             // Debug log
             if (!data.slotFairness) {
                 console.warn('Missing slotFairness for', data.fileName);
             }
-            
+
             return `
                 <div class="schedule-card" style="${isOriginal ? 'border: 3px solid #667eea;' : ''}" onclick="openDetailView('${data.fileName}')">
                     <div class="card-header">
@@ -536,41 +721,41 @@
                     <div class="card-body">
                         ${renderVerificationSection(verificationStatus)}
                         ${data.slotFairness ? renderFairnessSection(data.slotFairness, data.targetSlot) : '<div class="error">Missing fairness data</div>'}
-                        ${renderHomeAwaySection(homeAwayStats, data.homeAwayBalance)}
                         ${renderTargetSlotSection(data.targetDistribution, data.targetSlot)}
+                        ${renderHomeAwaySection(homeAwayStats, data.homeAwayBalance)}
                         ${renderOpponentSection(data.opponentVerification)}
                     </div>
                 </div>
             `;
         }
-        
+
         function calculateHomeAwayStats(homeAwayBalance) {
             const teams = Object.keys(homeAwayBalance);
             let perfect = 0, nearly = 0, imbalanced = 0;
-            
+
             teams.forEach(team => {
                 const diff = homeAwayBalance[team].diff;
                 if (diff === 0) perfect++;
                 else if (diff === 1) nearly++;
                 else imbalanced++;
             });
-            
+
             return { perfect, nearly, imbalanced, total: teams.length };
         }
-        
+
         function getVerificationStatus(data) {
             const checks = [];
-            
+
             if (data.slotVerification) {
                 checks.push({
                     name: 'Time Slots',
                     pass: data.slotVerification.isExact,
-                    message: data.slotVerification.isExact ? 
-                        'All slots match' : 
+                    message: data.slotVerification.isExact ?
+                        'All slots match' :
                         `${data.slotVerification.mismatchCount} mismatches`
                 });
             }
-            
+
             if (data.lockVerification) {
                 checks.push({
                     name: 'Locked Teams',
@@ -580,7 +765,7 @@
                         `${data.lockVerification.mismatchCount} mismatches`
                 });
             }
-            
+
             if (data.opponentVerification) {
                 checks.push({
                     name: 'Opponent Counts',
@@ -590,71 +775,84 @@
                         `${data.opponentVerification.issueCount} issues`
                 });
             }
-            
+
             return checks;
         }
-        
+
         function renderVerificationSection(checks) {
             if (checks.length === 0) return '';
-            
+
             const badges = checks.map(check => {
                 const badgeClass = check.pass ? 'badge-success' : 'badge-error';
                 const icon = check.pass ? '✓' : '✗';
                 return `<span class="badge ${badgeClass}">${icon} ${check.name}: ${check.message}</span>`;
             }).join(' ');
-            
+
+            const allPass = checks.every(c => c.pass);
+            const summary = allPass ? '✓ All checks pass' : `${checks.filter(c => !c.pass).length} issues`;
+
             return `
-                <div class="section">
-                    <div class="section-title">Verification Status</div>
-                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                        ${badges}
+                <div class="section always-visible">
+                    <div class="section-title" onclick="toggleSection(event)">
+                        <span>Verification: ${summary}</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                            ${badges}
+                        </div>
                     </div>
                 </div>
             `;
         }
-        
+
         function renderFairnessSection(fairness, targetSlot) {
             const badgeClass = fairness.fair ? 'badge-success' : 'badge-error';
             const icon = fairness.fair ? '✓' : '⚠';
             const badgeStyle = fairness.fair ? '' : 'background: #dc3545; color: white; font-weight: bold;';
-            
+
             return `
-                <div class="section">
-                    <div class="section-title">Target Slot Fairness</div>
-                    <div style="margin-bottom: 0.75rem;">
-                        <span class="badge ${badgeClass}" style="${badgeStyle}">
-                            ${icon} ${fairness.rating}
-                        </span>
+                <div class="section always-visible">
+                    <div class="section-title" onclick="toggleSection(event)">
+                        <span>Slot Fairness: ${fairness.rating} (±${fairness.range})</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Slot</span>
-                        <span class="stat-value" style="font-size: 0.9rem;">${targetSlot}</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Range (max - min)</span>
-                        <span class="stat-value">${fairness.range}</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Min / Max games</span>
-                        <span class="stat-value">${fairness.min} / ${fairness.max}</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Mean games per team</span>
-                        <span class="stat-value">${fairness.mean.toFixed(2)}</span>
+                    <div class="section-content">
+                        <div style="margin: 0.5rem 0 0.75rem 0;">
+                            <span class="badge ${badgeClass}" style="${badgeStyle}">
+                                ${icon} ${fairness.rating}
+                            </span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Slot</span>
+                            <span class="stat-value" style="font-size: 0.9rem;">${targetSlot}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Range (max - min)</span>
+                            <span class="stat-value">${fairness.range}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Min / Max games</span>
+                            <span class="stat-value">${fairness.min} / ${fairness.max}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Mean games per team</span>
+                            <span class="stat-value">${fairness.mean.toFixed(2)}</span>
+                        </div>
                     </div>
                 </div>
             `;
         }
-        
+
         function renderHomeAwaySection(stats, balance) {
-            const statusBadge = stats.imbalanced === 0 ? 
+            const statusBadge = stats.imbalanced === 0 ?
                 '<span class="badge badge-success">✓ Well Balanced</span>' :
                 `<span class="badge badge-warning">⚠ ${stats.imbalanced} imbalanced</span>`;
-            
+
             const topImbalanced = Object.entries(balance)
                 .sort((a, b) => b[1].diff - a[1].diff)
                 .slice(0, 5);
-            
+
             const teamList = topImbalanced.map(([team, data]) => {
                 const icon = data.diff === 0 ? '✓' : data.diff === 1 ? '~' : '⚠';
                 return `
@@ -664,28 +862,37 @@
                     </div>
                 `;
             }).join('');
-            
+
+            const summary = stats.imbalanced === 0 ? '✓ Balanced' : `${stats.imbalanced} imbalanced`;
+
             return `
                 <div class="section">
-                    <div class="section-title">Home/Away Balance</div>
-                    ${statusBadge}
-                    <div class="stat-row">
-                        <span class="stat-label">Perfect balance</span>
-                        <span class="stat-value">${stats.perfect} / ${stats.total}</span>
+                    <div class="section-title" onclick="toggleSection(event)">
+                        <span>Home/Away: ${summary}</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Nearly balanced</span>
-                        <span class="stat-value">${stats.nearly} / ${stats.total}</span>
+                    <div class="section-content">
+                        <div style="margin-top: 0.5rem;">
+                            ${statusBadge}
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Perfect balance</span>
+                            <span class="stat-value">${stats.perfect} / ${stats.total}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Nearly balanced</span>
+                            <span class="stat-value">${stats.nearly} / ${stats.total}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Imbalanced</span>
+                            <span class="stat-value">${stats.imbalanced} / ${stats.total}</span>
+                        </div>
+                        ${topImbalanced.length > 0 ? `<div style="margin-top: 0.75rem; font-weight: 600; font-size: 0.9rem;">Top Teams:</div><div class="team-list">${teamList}</div>` : ''}
                     </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Imbalanced</span>
-                        <span class="stat-value">${stats.imbalanced} / ${stats.total}</span>
-                    </div>
-                    ${topImbalanced.length > 0 ? `<div style="margin-top: 0.75rem; font-weight: 600; font-size: 0.9rem;">Top Teams:</div><div class="team-list">${teamList}</div>` : ''}
                 </div>
             `;
         }
-        
+
         function renderTargetSlotSection(distribution, targetSlot) {
             const entries = Object.entries(distribution).sort((a, b) => b[1] - a[1]);
             const teamList = entries.slice(0, 8).map(([team, count]) => `
@@ -694,53 +901,70 @@
                     <span>${count} games</span>
                 </div>
             `).join('');
-            
+
+            const [maxTeam, maxCount] = entries[0] || ['N/A', 0];
+            const [minTeam, minCount] = entries[entries.length - 1] || ['N/A', 0];
+
             return `
                 <div class="section">
-                    <div class="section-title">Target Slot Distribution</div>
-                    <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">${targetSlot}</div>
-                    <div class="team-list">${teamList}</div>
-                    ${entries.length > 8 ? `<div style="text-align: center; color: #999; font-size: 0.85rem; margin-top: 0.5rem;">+${entries.length - 8} more teams</div>` : ''}
+                    <div class="section-title" onclick="toggleSection(event)">
+                        <span>Target Slot: ${maxCount}-${minCount} games</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div style="font-size: 0.9rem; color: #666; margin: 0.5rem 0;">${targetSlot}</div>
+                        <div class="team-list">${teamList}</div>
+                        ${entries.length > 8 ? `<div style="text-align: center; color: #999; font-size: 0.85rem; margin-top: 0.5rem;">+${entries.length - 8} more teams</div>` : ''}
+                    </div>
                 </div>
             `;
         }
-        
+
         function renderOpponentSection(verification) {
             const statusBadge = verification.issueCount === 0 ?
                 '<span class="badge badge-success">✓ All Balanced</span>' :
                 `<span class="badge badge-error">✗ ${verification.issueCount} Issues</span>`;
-            
+
+            const summary = verification.issueCount === 0 ? '✓ Balanced' : `${verification.issueCount} issues`;
+
             return `
                 <div class="section">
-                    <div class="section-title">Opponent Balance</div>
-                    ${statusBadge}
-                    <div class="stat-row">
-                        <span class="stat-label">Expected games/pair</span>
-                        <span class="stat-value">${verification.expectedCount}</span>
+                    <div class="section-title" onclick="toggleSection(event)">
+                        <span>Opponents: ${summary}</span>
+                        <span class="toggle-icon">▼</span>
                     </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Total pairs</span>
-                        <span class="stat-value">${verification.totalPairs}</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">Issues found</span>
-                        <span class="stat-value">${verification.issueCount}</span>
+                    <div class="section-content">
+                        <div style="margin-top: 0.5rem;">
+                            ${statusBadge}
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Expected games/pair</span>
+                            <span class="stat-value">${verification.expectedCount}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Total pairs</span>
+                            <span class="stat-value">${verification.totalPairs}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Issues found</span>
+                            <span class="stat-value">${verification.issueCount}</span>
+                        </div>
                     </div>
                 </div>
             `;
         }
-        
+
         async function openDetailView(fileName) {
             const modal = document.getElementById('detail-modal');
             const modalTitle = document.getElementById('modal-title');
             const detailContainer = document.getElementById('schedule-detail');
-            
+
             modal.classList.add('active');
             detailContainer.innerHTML = '<div class="loading">Loading schedule details...</div>';
-            
+
             try {
                 const selectedData = await loadScheduleData(fileName);
-                
+
                 // Always compare with ORIGINAL schedule
                 if (fileName === ORIGINAL_SCHEDULE) {
                     modalTitle.textContent = `${fileName} - Full Game List`;
@@ -754,39 +978,39 @@
                 detailContainer.innerHTML = `<div class="error">Failed to load schedule details: ${error.message}</div>`;
             }
         }
-        
+
         function closeDetailView() {
             const modal = document.getElementById('detail-modal');
             modal.classList.remove('active');
         }
-        
+
         function renderSingleScheduleView(data) {
             return `
-                <div class="schedule-column" style="max-width: 900px; margin: 0 auto;">
+                <div class="schedule-column single-view" style="max-width: 900px; margin: 0 auto;">
                     <h3>${data.fileName} <span style="font-size: 0.9rem; font-weight: normal; color: #666;">(${data.gameCount} games)</span></h3>
                     ${renderGameList(data.games)}
                 </div>
             `;
         }
-        
+
         function renderScheduleComparison(originalData, selectedData) {
             return `
-                <div class="schedule-column">
+                <div class="schedule-column comparison-view">
                     <h3>📌 ${originalData.fileName} <span style="font-size: 0.9rem; font-weight: normal; color: #666;">(${originalData.gameCount} games)</span></h3>
                     ${renderGameList(originalData.games)}
                 </div>
-                <div class="schedule-column">
+                <div class="schedule-column comparison-view">
                     <h3>${selectedData.fileName} <span style="font-size: 0.9rem; font-weight: normal; color: #666;">(${selectedData.gameCount} games)</span></h3>
                     ${renderGameList(selectedData.games)}
                 </div>
             `;
         }
-        
+
         function renderGameList(games) {
             if (!games || games.length === 0) {
                 return '<div class="error">No games found</div>';
             }
-            
+
             return `
                 <div class="game-list">
                     ${games.map((game, idx) => `
@@ -801,7 +1025,7 @@
                 </div>
             `;
         }
-        
+
         // Close modal when clicking outside
         window.onclick = function(event) {
             const modal = document.getElementById('detail-modal');
@@ -809,7 +1033,31 @@
                 closeDetailView();
             }
         }
-        
+
+        // Toggle section collapse/expand
+        function toggleSection(event) {
+            event.stopPropagation(); // Prevent card click
+            const titleElement = event.currentTarget;
+            const contentElement = titleElement.nextElementSibling;
+            const section = titleElement.parentElement;
+
+            // On mobile, sections without always-visible class start collapsed (via CSS)
+            // Check actual computed height to determine true state
+            const isActuallyCollapsed = contentElement.scrollHeight === 0 ||
+                                       contentElement.classList.contains('collapsed') ||
+                                       (window.innerWidth <= 768 && !section.classList.contains('always-visible') && !contentElement.classList.contains('expanded'));
+
+            if (isActuallyCollapsed) {
+                contentElement.classList.remove('collapsed');
+                contentElement.classList.add('expanded');
+                titleElement.classList.remove('collapsed');
+            } else {
+                contentElement.classList.add('collapsed');
+                contentElement.classList.remove('expanded');
+                titleElement.classList.add('collapsed');
+            }
+        }
+
         // Initialize
         loadScheduleIndex();
     </script>
