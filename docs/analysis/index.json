@@ -1,0 +1,35 @@
+{
+  "schedules": [
+    {
+      "fileName": "ORIGINAL-schedule",
+      "sourceFile": "ORIGINAL-schedule.txt",
+      "outputFile": "docs/analysis/ORIGINAL-schedule.json"
+    },
+    {
+      "fileName": "schedule-pony-1",
+      "sourceFile": "generated/schedule-pony-1.txt",
+      "outputFile": "docs/analysis/schedule-pony-1.json"
+    },
+    {
+      "fileName": "schedule-pony-2",
+      "sourceFile": "generated/schedule-pony-2.txt",
+      "outputFile": "docs/analysis/schedule-pony-2.json"
+    },
+    {
+      "fileName": "schedule-pony-3",
+      "sourceFile": "generated/schedule-pony-3.txt",
+      "outputFile": "docs/analysis/schedule-pony-3.json"
+    },
+    {
+      "fileName": "schedule-pony-4",
+      "sourceFile": "generated/schedule-pony-4.txt",
+      "outputFile": "docs/analysis/schedule-pony-4.json"
+    },
+    {
+      "fileName": "schedule-pony-5",
+      "sourceFile": "generated/schedule-pony-5.txt",
+      "outputFile": "docs/analysis/schedule-pony-5.json"
+    }
+  ],
+  "generatedAt": "2026-02-10T16:17:32.982Z"
+}

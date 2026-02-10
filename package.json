@@ -1,0 +1,15 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "description": "Scheduling utilities for balancing Pony league games.",
+  "main": "src/cli.js",
+  "scripts": {
+    "analyze": "node src/cli.js analyze",
+    "generate": "node src/cli.js generate",
+    "export": "node src/cli.js export",
+    "test": "node src/cli.js analyze"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

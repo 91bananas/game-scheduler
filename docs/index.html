@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Analysis Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .controls {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .controls h2 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .schedule-select {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .schedule-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .schedule-checkbox:hover {
+            background: #e9ecef;
+        }
+        
+        .schedule-checkbox input:checked + label {
+            font-weight: 600;
+        }
+        
+        .schedule-checkbox input:checked ~ * {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+        
+        input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .schedule-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        
+        .schedule-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+        }
+        
+        .card-header h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-header .meta {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #667eea;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            color: #666;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .team-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .team-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.3rem 0.5rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .team-item .icon {
+            margin-right: 0.5rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .no-selection {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .schedule-card {
+            cursor: pointer;
+        }
+        
+        .schedule-card .card-header::after {
+            content: '👁 Click to view games';
+            display: block;
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            overflow: auto;
+        }
+        
+        .modal.active {
+            display: block;
+        }
+        
+        .modal-content {
+            background: #f5f5f5;
+            margin: 2rem auto;
+            padding: 0;
+            width: 95%;
+            max-width: 1600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .close-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .close-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .modal-body {
+            padding: 2rem;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+        
+        .schedule-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .schedule-column {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .schedule-column h3 {
+            margin: 0 0 1rem 0;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #667eea;
+            color: #667eea;
+        }
+        
+        .game-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .game-item {
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .game-item .game-date {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .game-item .game-matchup {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .game-item .game-slot {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        @media (max-width: 1200px) {
+            .schedule-comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📅 Schedule Analysis Comparison</h1>
+        <p>Compare and analyze multiple schedule variants</p>
+    </header>
+    
+    <div class="container">
+        <div class="controls">
+            <h2>Select Schedules to Compare</h2>
+            <div id="schedule-select" class="schedule-select">
+                <div class="loading">Loading schedules...</div>
+            </div>
+        </div>
+        
+        <div id="comparison-grid" class="comparison-grid">
+            <div class="no-selection">
+                Select one or more schedules above to view analysis
+            </div>
+        </div>
+    </div>
+    
+    <div id="detail-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Schedule Comparison</h2>
+                <button class="close-btn" onclick="closeDetailView()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="schedule-detail" class="schedule-comparison">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let availableSchedules = [];
+        let selectedSchedules = new Set();
+        const ORIGINAL_SCHEDULE = 'ORIGINAL-schedule';
+        
+        let scheduleDataCache = new Map();
+        
+        async function loadScheduleIndex() {
+            try {
+                const response = await fetch('analysis/index.json');
+                const data = await response.json();
+                availableSchedules = data.schedules || [];
+                
+                // Auto-select all schedules by default
+                availableSchedules.forEach(s => selectedSchedules.add(s.fileName));
+                
+                renderScheduleSelector();
+                renderComparison();
+            } catch (error) {
+                document.getElementById('schedule-select').innerHTML = 
+                    '<div class="error">Failed to load schedule index. Make sure to run "npm run export" first.</div>';
+            }
+        }
+        
+        function renderScheduleSelector() {
+            const container = document.getElementById('schedule-select');
+            if (availableSchedules.length === 0) {
+                container.innerHTML = '<div class="error">No schedules found. Run "npm run export" to generate analysis files.</div>';
+                return;
+            }
+            
+            container.innerHTML = availableSchedules.map((schedule, idx) => {
+                const isChecked = selectedSchedules.has(schedule.fileName);
+                const checkedAttr = isChecked ? 'checked' : '';
+                return `
+                <label class="schedule-checkbox">
+                    <input type="checkbox" 
+                           id="schedule-${idx}" 
+                           value="${schedule.fileName}"
+                           ${checkedAttr}
+                           onchange="toggleSchedule('${schedule.fileName}')">
+                    <span>${schedule.fileName}</span>
+                </label>
+            `;
+            }).join('');
+        }
+        
+        function toggleSchedule(fileName) {
+            if (selectedSchedules.has(fileName)) {
+                selectedSchedules.delete(fileName);
+            } else {
+                selectedSchedules.add(fileName);
+            }
+            renderComparison();
+        }
+        
+        async function renderComparison() {
+            const container = document.getElementById('comparison-grid');
+            
+            if (selectedSchedules.size === 0) {
+                container.innerHTML = '<div class="no-selection">Select one or more schedules above to view analysis</div>';
+                return;
+            }
+            
+            container.innerHTML = '<div class="loading">Loading schedule data...</div>';
+            
+            const cards = [];
+            
+            // Always show ORIGINAL-schedule first if it's selected
+            const schedulesToShow = Array.from(selectedSchedules);
+            schedulesToShow.sort((a, b) => {
+                if (a === ORIGINAL_SCHEDULE) return -1;
+                if (b === ORIGINAL_SCHEDULE) return 1;
+                return a.localeCompare(b);
+            });
+            
+            for (const fileName of schedulesToShow) {
+                try {
+                    const data = await loadScheduleData(fileName);
+                    cards.push(renderScheduleCard(data));
+                } catch (error) {
+                    cards.push(`<div class="error">Failed to load ${fileName}</div>`);
+                }
+            }
+            
+            container.innerHTML = cards.join('');
+        }
+        
+        async function loadScheduleData(fileName) {
+            if (scheduleDataCache.has(fileName)) {
+                return scheduleDataCache.get(fileName);
+            }
+            // Add cache-busting parameter
+            const cacheBuster = Date.now();
+            const response = await fetch(`analysis/${fileName}.json?v=${cacheBuster}`);
+            const data = await response.json();
+            scheduleDataCache.set(fileName, data);
+            return data;
+        }
+        
+        function renderScheduleCard(data) {
+            const homeAwayStats = calculateHomeAwayStats(data.homeAwayBalance);
+            const verificationStatus = getVerificationStatus(data);
+            const isOriginal = data.fileName === ORIGINAL_SCHEDULE;
+            const baselineBadge = isOriginal ? '<span class="badge badge-success" style="margin-left: 0.5rem;">📌 BASELINE</span>' : '';
+            
+            // Debug log
+            if (!data.slotFairness) {
+                console.warn('Missing slotFairness for', data.fileName);
+            }
+            
+            return `
+                <div class="schedule-card" style="${isOriginal ? 'border: 3px solid #667eea;' : ''}" onclick="openDetailView('${data.fileName}')">
+                    <div class="card-header">
+                        <h3>${data.fileName}${baselineBadge}</h3>
+                        <div class="meta">
+                            ${data.gameCount} games • ${data.teams.length} teams
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        ${renderVerificationSection(verificationStatus)}
+                        ${data.slotFairness ? renderFairnessSection(data.slotFairness, data.targetSlot) : '<div class="error">Missing fairness data</div>'}
+                        ${renderHomeAwaySection(homeAwayStats, data.homeAwayBalance)}
+                        ${renderTargetSlotSection(data.targetDistribution, data.targetSlot)}
+                        ${renderOpponentSection(data.opponentVerification)}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function calculateHomeAwayStats(homeAwayBalance) {
+            const teams = Object.keys(homeAwayBalance);
+            let perfect = 0, nearly = 0, imbalanced = 0;
+            
+            teams.forEach(team => {
+                const diff = homeAwayBalance[team].diff;
+                if (diff === 0) perfect++;
+                else if (diff === 1) nearly++;
+                else imbalanced++;
+            });
+            
+            return { perfect, nearly, imbalanced, total: teams.length };
+        }
+        
+        function getVerificationStatus(data) {
+            const checks = [];
+            
+            if (data.slotVerification) {
+                checks.push({
+                    name: 'Time Slots',
+                    pass: data.slotVerification.isExact,
+                    message: data.slotVerification.isExact ? 
+                        'All slots match' : 
+                        `${data.slotVerification.mismatchCount} mismatches`
+                });
+            }
+            
+            if (data.lockVerification) {
+                checks.push({
+                    name: 'Locked Teams',
+                    pass: data.lockVerification.success,
+                    message: data.lockVerification.success ?
+                        `${data.lockVerification.matchCount} locks verified` :
+                        `${data.lockVerification.mismatchCount} mismatches`
+                });
+            }
+            
+            if (data.opponentVerification) {
+                checks.push({
+                    name: 'Opponent Counts',
+                    pass: data.opponentVerification.issueCount === 0,
+                    message: data.opponentVerification.issueCount === 0 ?
+                        'All pairs balanced' :
+                        `${data.opponentVerification.issueCount} issues`
+                });
+            }
+            
+            return checks;
+        }
+        
+        function renderVerificationSection(checks) {
+            if (checks.length === 0) return '';
+            
+            const badges = checks.map(check => {
+                const badgeClass = check.pass ? 'badge-success' : 'badge-error';
+                const icon = check.pass ? '✓' : '✗';
+                return `<span class="badge ${badgeClass}">${icon} ${check.name}: ${check.message}</span>`;
+            }).join(' ');
+            
+            return `
+                <div class="section">
+                    <div class="section-title">Verification Status</div>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        ${badges}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderFairnessSection(fairness, targetSlot) {
+            const badgeClass = fairness.fair ? 'badge-success' : 'badge-error';
+            const icon = fairness.fair ? '✓' : '⚠';
+            const badgeStyle = fairness.fair ? '' : 'background: #dc3545; color: white; font-weight: bold;';
+            
+            return `
+                <div class="section">
+                    <div class="section-title">Target Slot Fairness</div>
+                    <div style="margin-bottom: 0.75rem;">
+                        <span class="badge ${badgeClass}" style="${badgeStyle}">
+                            ${icon} ${fairness.rating}
+                        </span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Slot</span>
+                        <span class="stat-value" style="font-size: 0.9rem;">${targetSlot}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Range (max - min)</span>
+                        <span class="stat-value">${fairness.range}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Min / Max games</span>
+                        <span class="stat-value">${fairness.min} / ${fairness.max}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Mean games per team</span>
+                        <span class="stat-value">${fairness.mean.toFixed(2)}</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderHomeAwaySection(stats, balance) {
+            const statusBadge = stats.imbalanced === 0 ? 
+                '<span class="badge badge-success">✓ Well Balanced</span>' :
+                `<span class="badge badge-warning">⚠ ${stats.imbalanced} imbalanced</span>`;
+            
+            const topImbalanced = Object.entries(balance)
+                .sort((a, b) => b[1].diff - a[1].diff)
+                .slice(0, 5);
+            
+            const teamList = topImbalanced.map(([team, data]) => {
+                const icon = data.diff === 0 ? '✓' : data.diff === 1 ? '~' : '⚠';
+                return `
+                    <div class="team-item">
+                        <span><span class="icon">${icon}</span>${team}</span>
+                        <span>${data.home}H / ${data.away}A (±${data.diff})</span>
+                    </div>
+                `;
+            }).join('');
+            
+            return `
+                <div class="section">
+                    <div class="section-title">Home/Away Balance</div>
+                    ${statusBadge}
+                    <div class="stat-row">
+                        <span class="stat-label">Perfect balance</span>
+                        <span class="stat-value">${stats.perfect} / ${stats.total}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Nearly balanced</span>
+                        <span class="stat-value">${stats.nearly} / ${stats.total}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Imbalanced</span>
+                        <span class="stat-value">${stats.imbalanced} / ${stats.total}</span>
+                    </div>
+                    ${topImbalanced.length > 0 ? `<div style="margin-top: 0.75rem; font-weight: 600; font-size: 0.9rem;">Top Teams:</div><div class="team-list">${teamList}</div>` : ''}
+                </div>
+            `;
+        }
+        
+        function renderTargetSlotSection(distribution, targetSlot) {
+            const entries = Object.entries(distribution).sort((a, b) => b[1] - a[1]);
+            const teamList = entries.slice(0, 8).map(([team, count]) => `
+                <div class="team-item">
+                    <span>${team}</span>
+                    <span>${count} games</span>
+                </div>
+            `).join('');
+            
+            return `
+                <div class="section">
+                    <div class="section-title">Target Slot Distribution</div>
+                    <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">${targetSlot}</div>
+                    <div class="team-list">${teamList}</div>
+                    ${entries.length > 8 ? `<div style="text-align: center; color: #999; font-size: 0.85rem; margin-top: 0.5rem;">+${entries.length - 8} more teams</div>` : ''}
+                </div>
+            `;
+        }
+        
+        function renderOpponentSection(verification) {
+            const statusBadge = verification.issueCount === 0 ?
+                '<span class="badge badge-success">✓ All Balanced</span>' :
+                `<span class="badge badge-error">✗ ${verification.issueCount} Issues</span>`;
+            
+            return `
+                <div class="section">
+                    <div class="section-title">Opponent Balance</div>
+                    ${statusBadge}
+                    <div class="stat-row">
+                        <span class="stat-label">Expected games/pair</span>
+                        <span class="stat-value">${verification.expectedCount}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Total pairs</span>
+                        <span class="stat-value">${verification.totalPairs}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Issues found</span>
+                        <span class="stat-value">${verification.issueCount}</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        async function openDetailView(fileName) {
+            const modal = document.getElementById('detail-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const detailContainer = document.getElementById('schedule-detail');
+            
+            modal.classList.add('active');
+            detailContainer.innerHTML = '<div class="loading">Loading schedule details...</div>';
+            
+            try {
+                const selectedData = await loadScheduleData(fileName);
+                
+                // Always compare with ORIGINAL schedule
+                if (fileName === ORIGINAL_SCHEDULE) {
+                    modalTitle.textContent = `${fileName} - Full Game List`;
+                    detailContainer.innerHTML = renderSingleScheduleView(selectedData);
+                } else {
+                    modalTitle.textContent = `Comparing: ORIGINAL vs ${fileName}`;
+                    const originalData = await loadScheduleData(ORIGINAL_SCHEDULE);
+                    detailContainer.innerHTML = renderScheduleComparison(originalData, selectedData);
+                }
+            } catch (error) {
+                detailContainer.innerHTML = `<div class="error">Failed to load schedule details: ${error.message}</div>`;
+            }
+        }
+        
+        function closeDetailView() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('active');
+        }
+        
+        function renderSingleScheduleView(data) {
+            return `
+                <div class="schedule-column" style="max-width: 900px; margin: 0 auto;">
+                    <h3>${data.fileName} <span style="font-size: 0.9rem; font-weight: normal; color: #666;">(${data.gameCount} games)</span></h3>
+                    ${renderGameList(data.games)}
+                </div>
+            `;
+        }
+        
+        function renderScheduleComparison(originalData, selectedData) {
+            return `
+                <div class="schedule-column">
+                    <h3>📌 ${originalData.fileName} <span style="font-size: 0.9rem; font-weight: normal; color: #666;">(${originalData.gameCount} games)</span></h3>
+                    ${renderGameList(originalData.games)}
+                </div>
+                <div class="schedule-column">
+                    <h3>${selectedData.fileName} <span style="font-size: 0.9rem; font-weight: normal; color: #666;">(${selectedData.gameCount} games)</span></h3>
+                    ${renderGameList(selectedData.games)}
+                </div>
+            `;
+        }
+        
+        function renderGameList(games) {
+            if (!games || games.length === 0) {
+                return '<div class="error">No games found</div>';
+            }
+            
+            return `
+                <div class="game-list">
+                    ${games.map((game, idx) => `
+                        <div class="game-item">
+                            <div class="game-date">${game.date}</div>
+                            <div class="game-matchup">
+                                <strong>${game.away}</strong> @ <strong>${game.home}</strong>
+                            </div>
+                            <div class="game-slot">${game.slot}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('detail-modal');
+            if (event.target === modal) {
+                closeDetailView();
+            }
+        }
+        
+        // Initialize
+        loadScheduleIndex();
+    </script>
+</body>
+</html>

@@ -1,0 +1,553 @@
+{
+  "fileName": "schedule-pony-1",
+  "sourceFile": "generated/schedule-pony-1.txt",
+  "generatedAt": "2026-02-10T16:17:32.976Z",
+  "gameCount": 63,
+  "teams": [
+    "KP Ballenger",
+    "KP Cleveland",
+    "KP Elliott",
+    "KP Mccoid",
+    "KP Miller",
+    "KP Moreno",
+    "KP Pinder"
+  ],
+  "targetSlot": "7:00PM - 9:00PM",
+  "games": [
+    {
+      "date": "02/23/2026",
+      "away": "KP Cleveland",
+      "home": "KP Elliott",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "02/23/2026",
+      "away": "KP Ballenger",
+      "home": "KP Moreno",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "02/25/2026",
+      "away": "KP Moreno",
+      "home": "KP Miller",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "02/25/2026",
+      "away": "KP Mccoid",
+      "home": "KP Elliott",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "02/28/2026",
+      "away": "KP Mccoid",
+      "home": "KP Ballenger",
+      "slot": "8:00AM - 10:00AM"
+    },
+    {
+      "date": "02/28/2026",
+      "away": "KP Moreno",
+      "home": "KP Pinder",
+      "slot": "10:00AM - 12:00PM"
+    },
+    {
+      "date": "02/28/2026",
+      "away": "KP Cleveland",
+      "home": "KP Miller",
+      "slot": "12:00PM - 2:00PM"
+    },
+    {
+      "date": "03/02/2026",
+      "away": "KP Moreno",
+      "home": "KP Mccoid",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "03/02/2026",
+      "away": "KP Pinder",
+      "home": "KP Cleveland",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "03/04/2026",
+      "away": "KP Ballenger",
+      "home": "KP Pinder",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "03/04/2026",
+      "away": "KP Miller",
+      "home": "KP Elliott",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "03/07/2026",
+      "away": "KP Mccoid",
+      "home": "KP Cleveland",
+      "slot": "2:00PM - 4:00PM"
+    },
+    {
+      "date": "03/07/2026",
+      "away": "KP Pinder",
+      "home": "KP Elliott",
+      "slot": "4:00PM - 6:00PM"
+    },
+    {
+      "date": "03/07/2026",
+      "away": "KP Miller",
+      "home": "KP Ballenger",
+      "slot": "6:00PM - 8:00PM"
+    },
+    {
+      "date": "03/09/2026",
+      "away": "KP Elliott",
+      "home": "KP Ballenger",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "03/09/2026",
+      "away": "KP Cleveland",
+      "home": "KP Moreno",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "03/11/2026",
+      "away": "KP Cleveland",
+      "home": "KP Ballenger",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "03/11/2026",
+      "away": "KP Pinder",
+      "home": "KP Mccoid",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "03/14/2026",
+      "away": "KP Miller",
+      "home": "KP Pinder",
+      "slot": "8:00AM - 10:00AM"
+    },
+    {
+      "date": "03/14/2026",
+      "away": "KP Moreno",
+      "home": "KP Elliott",
+      "slot": "10:00AM - 12:00PM"
+    },
+    {
+      "date": "03/14/2026",
+      "away": "KP Cleveland",
+      "home": "KP Mccoid",
+      "slot": "12:00PM - 2:00PM"
+    },
+    {
+      "date": "03/16/2026",
+      "away": "KP Mccoid",
+      "home": "KP Miller",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "03/16/2026",
+      "away": "KP Ballenger",
+      "home": "KP Pinder",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "03/18/2026",
+      "away": "KP Pinder",
+      "home": "KP Moreno",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "03/18/2026",
+      "away": "KP Elliott",
+      "home": "KP Miller",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "03/21/2026",
+      "away": "KP Elliott",
+      "home": "KP Pinder",
+      "slot": "2:00PM - 4:00PM"
+    },
+    {
+      "date": "03/21/2026",
+      "away": "KP Cleveland",
+      "home": "KP Moreno",
+      "slot": "4:00PM - 6:00PM"
+    },
+    {
+      "date": "03/21/2026",
+      "away": "KP Miller",
+      "home": "KP Ballenger",
+      "slot": "6:00PM - 8:00PM"
+    },
+    {
+      "date": "03/23/2026",
+      "away": "KP Mccoid",
+      "home": "KP Elliott",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "03/23/2026",
+      "away": "KP Ballenger",
+      "home": "KP Moreno",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "03/25/2026",
+      "away": "KP Pinder",
+      "home": "KP Mccoid",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "03/25/2026",
+      "away": "KP Miller",
+      "home": "KP Cleveland",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "03/28/2026",
+      "away": "KP Elliott",
+      "home": "KP Cleveland",
+      "slot": "8:00AM - 10:00AM"
+    },
+    {
+      "date": "03/28/2026",
+      "away": "KP Miller",
+      "home": "KP Moreno",
+      "slot": "10:00AM - 12:00PM"
+    },
+    {
+      "date": "03/28/2026",
+      "away": "KP Ballenger",
+      "home": "KP Mccoid",
+      "slot": "12:00PM - 2:00PM"
+    },
+    {
+      "date": "04/06/2026",
+      "away": "KP Pinder",
+      "home": "KP Miller",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "04/06/2026",
+      "away": "KP Moreno",
+      "home": "KP Mccoid",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "04/08/2026",
+      "away": "KP Ballenger",
+      "home": "KP Cleveland",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "04/08/2026",
+      "away": "KP Miller",
+      "home": "KP Elliott",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "04/11/2026",
+      "away": "KP Elliott",
+      "home": "KP Moreno",
+      "slot": "2:00PM - 4:00PM"
+    },
+    {
+      "date": "04/11/2026",
+      "away": "KP Mccoid",
+      "home": "KP Miller",
+      "slot": "4:00PM - 6:00PM"
+    },
+    {
+      "date": "04/11/2026",
+      "away": "KP Cleveland",
+      "home": "KP Pinder",
+      "slot": "6:00PM - 8:00PM"
+    },
+    {
+      "date": "04/13/2026",
+      "away": "KP Elliott",
+      "home": "KP Ballenger",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "04/13/2026",
+      "away": "KP Cleveland",
+      "home": "KP Pinder",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "04/15/2026",
+      "away": "KP Pinder",
+      "home": "KP Moreno",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "04/15/2026",
+      "away": "KP Mccoid",
+      "home": "KP Ballenger",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "04/18/2026",
+      "away": "KP Miller",
+      "home": "KP Ballenger",
+      "slot": "8:00AM - 10:00AM"
+    },
+    {
+      "date": "04/18/2026",
+      "away": "KP Pinder",
+      "home": "KP Mccoid",
+      "slot": "10:00AM - 12:00PM"
+    },
+    {
+      "date": "04/18/2026",
+      "away": "KP Elliott",
+      "home": "KP Cleveland",
+      "slot": "12:00PM - 2:00PM"
+    },
+    {
+      "date": "04/20/2026",
+      "away": "KP Moreno",
+      "home": "KP Elliott",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "04/20/2026",
+      "away": "KP Ballenger",
+      "home": "KP Cleveland",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "04/22/2026",
+      "away": "KP Ballenger",
+      "home": "KP Moreno",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "04/22/2026",
+      "away": "KP Elliott",
+      "home": "KP Mccoid",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "04/25/2026",
+      "away": "KP Mccoid",
+      "home": "KP Cleveland",
+      "slot": "2:00PM - 4:00PM"
+    },
+    {
+      "date": "04/25/2026",
+      "away": "KP Pinder",
+      "home": "KP Ballenger",
+      "slot": "4:00PM - 6:00PM"
+    },
+    {
+      "date": "04/25/2026",
+      "away": "KP Moreno",
+      "home": "KP Miller",
+      "slot": "6:00PM - 8:00PM"
+    },
+    {
+      "date": "04/27/2026",
+      "away": "KP Ballenger",
+      "home": "KP Elliott",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "04/27/2026",
+      "away": "KP Miller",
+      "home": "KP Pinder",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "04/29/2026",
+      "away": "KP Cleveland",
+      "home": "KP Miller",
+      "slot": "5:00PM - 7:00PM"
+    },
+    {
+      "date": "04/29/2026",
+      "away": "KP Moreno",
+      "home": "KP Mccoid",
+      "slot": "7:00PM - 9:00PM"
+    },
+    {
+      "date": "05/02/2026",
+      "away": "KP Mccoid",
+      "home": "KP Miller",
+      "slot": "8:00AM - 10:00AM"
+    },
+    {
+      "date": "05/02/2026",
+      "away": "KP Moreno",
+      "home": "KP Cleveland",
+      "slot": "10:00AM - 12:00PM"
+    },
+    {
+      "date": "05/02/2026",
+      "away": "KP Elliott",
+      "home": "KP Pinder",
+      "slot": "12:00PM - 2:00PM"
+    }
+  ],
+  "targetDistribution": {
+    "KP Ballenger": 5,
+    "KP Cleveland": 5,
+    "KP Elliott": 5,
+    "KP Mccoid": 6,
+    "KP Miller": 5,
+    "KP Moreno": 5,
+    "KP Pinder": 5
+  },
+  "slotFairness": {
+    "rating": "Excellent",
+    "range": 1,
+    "min": 5,
+    "max": 6,
+    "mean": 5.14,
+    "stdDev": 0.35,
+    "fair": true
+  },
+  "homeAwayBalance": {
+    "KP Elliott": {
+      "home": 9,
+      "away": 9,
+      "diff": 0
+    },
+    "KP Moreno": {
+      "home": 9,
+      "away": 9,
+      "diff": 0
+    },
+    "KP Miller": {
+      "home": 9,
+      "away": 9,
+      "diff": 0
+    },
+    "KP Ballenger": {
+      "home": 9,
+      "away": 9,
+      "diff": 0
+    },
+    "KP Pinder": {
+      "home": 9,
+      "away": 9,
+      "diff": 0
+    },
+    "KP Mccoid": {
+      "home": 9,
+      "away": 9,
+      "diff": 0
+    },
+    "KP Cleveland": {
+      "home": 9,
+      "away": 9,
+      "diff": 0
+    }
+  },
+  "teamStats": {
+    "KP Ballenger": {
+      "games": 18,
+      "opponents": {
+        "KP Moreno": 3,
+        "KP Mccoid": 3,
+        "KP Pinder": 3,
+        "KP Miller": 3,
+        "KP Elliott": 3,
+        "KP Cleveland": 3
+      }
+    },
+    "KP Cleveland": {
+      "games": 18,
+      "opponents": {
+        "KP Elliott": 3,
+        "KP Miller": 3,
+        "KP Pinder": 3,
+        "KP Mccoid": 3,
+        "KP Moreno": 3,
+        "KP Ballenger": 3
+      }
+    },
+    "KP Elliott": {
+      "games": 18,
+      "opponents": {
+        "KP Cleveland": 3,
+        "KP Mccoid": 3,
+        "KP Miller": 3,
+        "KP Pinder": 3,
+        "KP Ballenger": 3,
+        "KP Moreno": 3
+      }
+    },
+    "KP Mccoid": {
+      "games": 18,
+      "opponents": {
+        "KP Elliott": 3,
+        "KP Ballenger": 3,
+        "KP Moreno": 3,
+        "KP Cleveland": 3,
+        "KP Pinder": 3,
+        "KP Miller": 3
+      }
+    },
+    "KP Miller": {
+      "games": 18,
+      "opponents": {
+        "KP Moreno": 3,
+        "KP Cleveland": 3,
+        "KP Elliott": 3,
+        "KP Ballenger": 3,
+        "KP Pinder": 3,
+        "KP Mccoid": 3
+      }
+    },
+    "KP Moreno": {
+      "games": 18,
+      "opponents": {
+        "KP Ballenger": 3,
+        "KP Miller": 3,
+        "KP Pinder": 3,
+        "KP Mccoid": 3,
+        "KP Cleveland": 3,
+        "KP Elliott": 3
+      }
+    },
+    "KP Pinder": {
+      "games": 18,
+      "opponents": {
+        "KP Moreno": 3,
+        "KP Cleveland": 3,
+        "KP Ballenger": 3,
+        "KP Elliott": 3,
+        "KP Mccoid": 3,
+        "KP Miller": 3
+      }
+    }
+  },
+  "opponentVerification": {
+    "expectedCount": 3,
+    "totalPairs": 21,
+    "issueCount": 0,
+    "issues": []
+  },
+  "slotVerification": {
+    "expectedCount": 63,
+    "actualCount": 63,
+    "mismatchCount": 0,
+    "isExact": true,
+    "mismatches": []
+  },
+  "lockVerification": {
+    "lockedTeams": [
+      "KP Elliott"
+    ],
+    "lockCount": 18,
+    "matchCount": 18,
+    "mismatchCount": 0,
+    "success": true,
+    "mismatches": []
+  }
+}
